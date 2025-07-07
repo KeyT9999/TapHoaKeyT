@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Tạp Hóa KeyT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .dashboard-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+            transition: transform 0.2s;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+        .dashboard-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+        .stat-label {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <h2 class="mb-4"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="dashboard-card bg-primary text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-shopping-cart dashboard-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Tổng đơn hàng</div>
+                        <div class="stat-value" th:text="${totalOrders}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card bg-success text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-coins dashboard-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Doanh thu</div>
+                        <div class="stat-value" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card bg-info text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-users dashboard-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Người dùng</div>
+                        <div class="stat-value" th:text="${totalUsers}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card bg-warning text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-boxes dashboard-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Sản phẩm</div>
+                        <div class="stat-value" th:text="${totalProducts}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="dashboard-card bg-secondary text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-user-shield dashboard-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Admin</div>
+                        <div class="stat-value" th:text="${adminCount}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card bg-dark text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-user dashboard-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">User</div>
+                        <div class="stat-value" th:text="${userCount}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card bg-danger text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-hourglass-half dashboard-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Đơn chờ xử lý</div>
+                        <div class="stat-value" th:text="${pendingOrders}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="dashboard-card bg-success text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-check-circle dashboard-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Đơn hoàn thành</div>
+                        <div class="stat-value" th:text="${completedOrders}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <a th:href="@{/admin/products}" class="btn btn-outline-primary btn-lg w-100 mb-3">
+                <i class="fas fa-box"></i> Quản lý sản phẩm
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a th:href="@{/admin/orders}" class="btn btn-outline-success btn-lg w-100 mb-3">
+                <i class="fas fa-file-invoice"></i> Quản lý đơn hàng
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a th:href="@{/admin/users}" class="btn btn-outline-info btn-lg w-100 mb-3">
+                <i class="fas fa-users-cog"></i> Quản lý người dùng
+            </a>
+        </div>
+        <div class="col-md-6">
+            <a th:href="@{/}" class="btn btn-outline-secondary btn-lg w-100 mb-3">
+                <i class="fas fa-home"></i> Về trang chủ
+            </a>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 

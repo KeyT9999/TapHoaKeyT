@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận đơn hàng - Tạp Hóa KeyT</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .order-number {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .order-details {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        .total {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .next-steps {
+            background-color: #d4edda;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .step {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .step-number {
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🛒 Tạp Hóa KeyT</div>
+            <h2>Xác nhận đơn hàng</h2>
+        </div>
+        
+        <div class="content">
+            <h3>Xin chào <span th:text="${userName}">Người dùng</span>! 👋</h3>
+            
+            <p>Cảm ơn bạn đã đặt hàng tại <strong>Tạp Hóa KeyT</strong>. Dưới đây là thông tin chi tiết về đơn hàng của bạn:</p>
+            
+            <div class="order-number">
+                Đơn hàng #<span th:text="${orderNumber}">12345</span>
+            </div>
+            
+            <div class="order-details">
+                <h4>📋 Chi tiết đơn hàng:</h4>
+                <div th:each="item : ${order.items}" class="order-item">
+                    <div>
+                        <strong th:text="${item.product.name}">Tên sản phẩm</strong><br>
+                        <small th:text="${item.product.description}">Mô tả sản phẩm</small>
+                    </div>
+                    <div>
+                        <strong th:text="${#numbers.formatDecimal(item.product.price, 0, 'COMMA', 0, 'POINT')}">0</strong> VNĐ
+                    </div>
+                </div>
+                
+                <div class="total">
+                    <strong>Tổng cộng: <span th:text="${#numbers.formatDecimal(totalAmount, 0, 'COMMA', 0, 'POINT')}">0</span> VNĐ</strong>
+                </div>
+            </div>
+            
+            <div class="status-pending">
+                <strong>⏳ Trạng thái:</strong> Đang chờ xử lý
+            </div>
+            
+            <div class="next-steps">
+                <h4>🔄 Quy trình xử lý đơn hàng:</h4>
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <strong>Xác nhận thanh toán:</strong> Chúng tôi sẽ kiểm tra chứng từ thanh toán của bạn
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <strong>Xử lý đơn hàng:</strong> Gift code sẽ được chuẩn bị và gửi cho bạn
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <strong>Gửi gift code:</strong> Bạn sẽ nhận được email chứa gift code trong vòng 24 giờ
+                </div>
+            </div>
+            
+            <div style="background-color: #fff3cd; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                <h4>💡 Lưu ý quan trọng:</h4>
+                <ul>
+                    <li>Vui lòng kiểm tra email thường xuyên để nhận gift code</li>
+                    <li>Nếu có vấn đề, hãy liên hệ hỗ trợ qua email hoặc chat</li>
+                    <li>Tất cả sản phẩm đều được bảo hành 30 ngày</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2024 Tạp Hóa KeyT. Tất cả quyền được bảo lưu.</p>
+            <p>Email này được gửi tự động, vui lòng không trả lời.</p>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chào mừng đến với Tạp Hóa KeyT</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .welcome-text {
+            font-size: 18px;
+            color: #666;
+        }
+        .content {
+            margin: 30px 0;
+        }
+        .highlight {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+        .features {
+            margin: 20px 0;
+        }
+        .feature {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .feature-icon {
+            color: #28a745;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🛒 Tạp Hóa KeyT</div>
+            <div class="welcome-text">Chào mừng bạn đến với cộng đồng!</div>
+        </div>
+        
+        <div class="content">
+            <h2>Xin chào <span th:text="${userName}">Người dùng</span>! 👋</h2>
+            
+            <p>Cảm ơn bạn đã đăng ký tài khoản tại <strong>Tạp Hóa KeyT</strong>. Chúng tôi rất vui mừng chào đón bạn!</p>
+            
+            <div class="highlight">
+                <h3>🎉 Tài khoản của bạn đã được tạo thành công!</h3>
+                <p><strong>Email:</strong> <span th:text="${email}">user@example.com</span></p>
+            </div>
+            
+            <h3>🚀 Bạn có thể làm gì với tài khoản này?</h3>
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">🎬</span>
+                    <strong>Mua dịch vụ số:</strong> Netflix, Spotify, YouTube Premium
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🤖</span>
+                    <strong>AI Tools:</strong> ChatGPT Plus, Claude Pro, Midjourney
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">📚</span>
+                    <strong>Khóa học online:</strong> Udemy, Skillshare Premium
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">💻</span>
+                    <strong>Phần mềm:</strong> Microsoft Office, Adobe Creative Cloud
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="http://localhost:8080/products" class="button">Khám phá sản phẩm ngay</a>
+            </div>
+            
+            <div class="highlight">
+                <h4>💡 Lưu ý quan trọng:</h4>
+                <ul>
+                    <li>Tất cả sản phẩm đều được bảo hành 30 ngày</li>
+                    <li>Gift code sẽ được gửi qua email sau khi thanh toán</li>
+                    <li>Hỗ trợ 24/7 qua email hoặc chat</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2024 Tạp Hóa KeyT. Tất cả quyền được bảo lưu.</p>
+            <p>Email này được gửi tự động, vui lòng không trả lời.</p>
+        </div>
+    </div>
+</body>
+</html> 

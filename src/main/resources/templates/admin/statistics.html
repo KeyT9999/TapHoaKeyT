@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê chi tiết - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .stat-card {
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-4px) scale(1.01);
+        }
+        .stat-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+        .stat-label {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-chart-bar"></i> Thống kê chi tiết</h2>
+        <a th:href="@{/admin}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Về Dashboard
+        </a>
+    </div>
+
+    <!-- Revenue Statistics -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="stat-card bg-success text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-coins stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Tổng doanh thu</div>
+                        <div class="stat-value" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stat-card bg-info text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-calendar-alt stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Doanh thu tháng này</div>
+                        <div class="stat-value" th:text="${#numbers.formatDecimal(monthlyRevenue, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Statistics -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="stat-card bg-warning text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-hourglass-half stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Chờ xử lý</div>
+                        <div class="stat-value" th:text="${pendingOrders}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-info text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-check-circle stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Đã xác nhận</div>
+                        <div class="stat-value" th:text="${confirmedOrders}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-success text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-check-double stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Hoàn thành</div>
+                        <div class="stat-value" th:text="${completedOrders}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card bg-danger text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-times-circle stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Đã hủy</div>
+                        <div class="stat-value" th:text="${cancelledOrders}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User & Product Statistics -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="stat-card bg-primary text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-users stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Tổng người dùng</div>
+                        <div class="stat-value" th:text="${totalUsers}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card bg-secondary text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-user-shield stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Admin</div>
+                        <div class="stat-value" th:text="${adminUsers}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stat-card bg-dark text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-user stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">User thường</div>
+                        <div class="stat-value" th:text="${regularUsers}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Statistics -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="stat-card bg-warning text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-boxes stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Tổng sản phẩm</div>
+                        <div class="stat-value" th:text="${totalProducts}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stat-card bg-success text-white p-4">
+                <div class="d-flex align-items-center mb-2">
+                    <i class="fas fa-check-square stat-icon me-3"></i>
+                    <div>
+                        <div class="stat-label">Sản phẩm có sẵn</div>
+                        <div class="stat-value" th:text="${availableProducts}">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Thống kê đơn hàng</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="orderChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar"></i> Thống kê người dùng</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="userChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    // Order Chart
+    const orderCtx = document.getElementById('orderChart').getContext('2d');
+    new Chart(orderCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Chờ xử lý', 'Đã xác nhận', 'Hoàn thành', 'Đã hủy'],
+            datasets: [{
+                data: [
+                    /*[[${pendingOrders}]]*/ 0,
+                    /*[[${confirmedOrders}]]*/ 0,
+                    /*[[${completedOrders}]]*/ 0,
+                    /*[[${cancelledOrders}]]*/ 0
+                ],
+                backgroundColor: [
+                    '#ffc107',
+                    '#17a2b8',
+                    '#28a745',
+                    '#dc3545'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+
+    // User Chart
+    const userCtx = document.getElementById('userChart').getContext('2d');
+    new Chart(userCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Admin', 'User thường'],
+            datasets: [{
+                label: 'Số lượng',
+                data: [
+                    /*[[${adminUsers}]]*/ 0,
+                    /*[[${regularUsers}]]*/ 0
+                ],
+                backgroundColor: [
+                    '#6c757d',
+                    '#343a40'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html> 

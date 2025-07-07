@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.id != null ? 'Sửa sản phẩm' : 'Thêm sản phẩm mới'} + ' - Admin'">Form - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <div class="form-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>
+                <i class="fas fa-box"></i> 
+                <span th:text="${product.id != null ? 'Sửa sản phẩm' : 'Thêm sản phẩm mới'}">Form</span>
+            </h2>
+            <a th:href="@{/admin/products}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form th:action="${product.id != null ? '/admin/products/' + product.id : '/admin/products'}" 
+                      th:object="${product}" method="post" enctype="multipart/form-data">
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Basic Info -->
+                            <div class="mb-3">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-tag"></i> Tên sản phẩm *
+                                </label>
+                                <input type="text" class="form-control" id="name" th:field="*{name}" 
+                                       placeholder="Nhập tên sản phẩm" required>
+                                <div th:if="${#fields.hasErrors('name')}" class="text-danger small">
+                                    <span th:errors="*{name}"></span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="category" class="form-label">
+                                            <i class="fas fa-folder"></i> Danh mục *
+                                        </label>
+                                        <select class="form-select" id="category" th:field="*{category}" required>
+                                            <option value="">Chọn danh mục</option>
+                                            <option th:each="cat : ${categories}" 
+                                                    th:value="${cat}" 
+                                                    th:text="${cat.displayName}">Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="productType" class="form-label">
+                                            <i class="fas fa-cube"></i> Loại sản phẩm
+                                        </label>
+                                        <input type="text" class="form-control" id="productType" 
+                                               th:field="*{type}" placeholder="VD: Netflix Premium, ChatGPT Plus">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">
+                                            <i class="fas fa-dollar-sign"></i> Giá (VNĐ) *
+                                        </label>
+                                        <input type="number" class="form-control" id="price" 
+                                               th:field="*{price}" placeholder="0" min="0" step="1000" required>
+                                        <div th:if="${#fields.hasErrors('price')}" class="text-danger small">
+                                            <span th:errors="*{price}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="duration" class="form-label">
+                                            <i class="fas fa-clock"></i> Thời hạn
+                                        </label>
+                                        <input type="text" class="form-control" id="duration" 
+                                               th:field="*{duration}" placeholder="VD: 1 tháng, 3 tháng">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">
+                                    <i class="fas fa-align-left"></i> Mô tả *
+                                </label>
+                                <textarea class="form-control" id="description" th:field="*{description}" 
+                                          rows="4" placeholder="Mô tả chi tiết về sản phẩm..." required></textarea>
+                                <div th:if="${#fields.hasErrors('description')}" class="text-danger small">
+                                    <span th:errors="*{description}"></span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="giftNote" class="form-label">
+                                    <i class="fas fa-gift"></i> Ghi chú gift code
+                                </label>
+                                <textarea class="form-control" id="giftNote" th:field="*{giftNote}" 
+                                          rows="3" placeholder="Hướng dẫn sử dụng gift code..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <!-- Image Upload -->
+                            <div class="mb-3">
+                                <label for="imageUrl" class="form-label">
+                                    <i class="fas fa-image"></i> URL ảnh sản phẩm
+                                </label>
+                                <input type="url" class="form-control" id="imageUrl" 
+                                       th:field="*{imageUrl}" placeholder="https://example.com/image.jpg">
+                                <div class="mt-2">
+                                    <small class="text-muted">Hoặc upload ảnh:</small>
+                                    <input type="file" class="form-control" id="imageFile" 
+                                           accept="image/*" onchange="previewImage(this)">
+                                </div>
+                            </div>
+
+                            <!-- Image Preview -->
+                            <div class="mb-3" id="imagePreview" style="display: none;">
+                                <label class="form-label">Xem trước ảnh:</label>
+                                <img id="previewImg" class="preview-image img-fluid" alt="Preview">
+                            </div>
+
+                            <!-- Status -->
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="available" 
+                                           th:field="*{available}">
+                                    <label class="form-check-label" for="available">
+                                        <i class="fas fa-check-circle"></i> Có sẵn để bán
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> 
+                                    <span th:text="${product.id != null ? 'Cập nhật' : 'Tạo sản phẩm'}">Submit</span>
+                                </button>
+                                <a th:href="@{/admin/products}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times"></i> Hủy
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Form validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const name = document.getElementById('name').value.trim();
+        const category = document.getElementById('category').value;
+        const price = document.getElementById('price').value;
+        const description = document.getElementById('description').value.trim();
+
+        if (!name || !category || !price || !description) {
+            e.preventDefault();
+            alert('Vui lòng điền đầy đủ thông tin bắt buộc!');
+            return false;
+        }
+
+        if (price <= 0) {
+            e.preventDefault();
+            alert('Giá sản phẩm phải lớn hơn 0!');
+            return false;
+        }
+    });
+</script>
+</body>
+</html> 
