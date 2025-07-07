@@ -29,6 +29,9 @@ public interface GiftCodeRepository extends JpaRepository<GiftCode, Long> {
     @Query("SELECT COUNT(g) FROM GiftCode g WHERE g.status = :status")
     long countByStatus(@Param("status") GiftCodeStatus status);
     
+    @Query("SELECT COUNT(g) FROM GiftCode g WHERE g.product = :product")
+    long countByProduct(@Param("product") Product product);
+    
     @Query("SELECT g FROM GiftCode g WHERE g.product = :product AND g.status = 'AVAILABLE' ORDER BY g.createdAt ASC")
     List<GiftCode> findAvailableByProduct(@Param("product") Product product);
     
