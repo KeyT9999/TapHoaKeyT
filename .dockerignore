@@ -1,0 +1,40 @@
+# Maven
+target/
+!target/*.jar
+!target/*.war
+
+# IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+
+# Documentation
+README.md
+*.md
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Environment files
+.env
+*.env
+
+# Temporary files
+*.tmp
+*.temp 
