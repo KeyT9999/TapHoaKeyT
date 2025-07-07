@@ -35,11 +35,11 @@ RUN chown -R appuser:appgroup /app
 # Switch to non-root user
 USER appuser
 
-# Expose port
+# Expose port (will be overridden by Render's PORT env var)
 EXPOSE 8080
 
 # Set JVM options for production
 ENV JAVA_OPTS="-Xmx512m -Xms256m"
 
-# Run the application with production profile
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar --spring.profiles.active=prod"] 
+# Run the application with production profile and dynamic port
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar --spring.profiles.active=prod --server.port=${PORT:-8080}"] 

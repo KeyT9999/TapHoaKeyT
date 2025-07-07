@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: taphoa-keyt
+    env: docker
+    plan: free
+    region: singapore
+    buildCommand: docker build -t taphoa-keyt .
+    startCommand: docker run -p $PORT:8080 taphoa-keyt
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d1llgoer433s73dsa27g-a.singapore-postgres.render.com:5432/taphoa_keyt
+      - key: SPRING_DATASOURCE_USERNAME
+        value: taphoa_user
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: 1ISPSRXPjfsKAYs0vPb5naP3Rf5iIlGB
+      - key: JWT_SECRET
+        value: TapHoaKeyTSecretKey2024ForJWTTokenGeneration 
